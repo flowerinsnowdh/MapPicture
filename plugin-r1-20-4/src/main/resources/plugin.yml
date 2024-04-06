@@ -1,0 +1,5 @@
+main: 'online.flowerinsnow.mappicture.plugin.MapPicturePlugin'
+name: 'MapPicture'
+version: '${version}'
+author: 'flowerinsnow'
+api-version: '1.20'

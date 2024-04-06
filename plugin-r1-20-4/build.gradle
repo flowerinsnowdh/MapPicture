@@ -1,0 +1,74 @@
+plugins() {
+    id('java')
+    id('java-library')
+    id('com.github.johnrengelman.shadow').version("${shadow_version}")
+}
+
+group = rootProject.group
+version = rootProject.version
+
+repositories() {
+    mavenCentral()
+    mavenLocal()
+    maven() {
+        url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+    maven() {
+        url = 'https://repo.flowerinsnow.online/repository/maven-public/'
+    }
+}
+
+configurations() {
+    shade
+    api.extendsFrom(shade)
+}
+
+dependencies() {
+    shade(project(path: ':api', configuration: 'shadow'))
+    implementation("org.spigotmc:spigot:${spigot_version}")
+    implementation("org.jetbrains:annotations:${jetbrains_annotations_version}")
+    shade('online.flowerinsnow.reflectionutils:reflectionutils:1.0.0')
+    shade("org.incendo:cloud-paper:${cloud_version}")
+    shade("org.incendo:cloud-annotations:${cloud_version}")
+    shade('cc.carm.lib:mineconfiguration-bukkit:2.9.3')
+}
+
+shadowJar() {
+    archiveClassifier = null
+    configurations = [
+            project.configurations.shade
+    ]
+
+    [
+            'cc.carm.lib.configuration',
+            'cc.carm.lib.easyplugin',
+            'cc.carm.lib.mineconfiguration',
+            'cc.carm.lib.yamlcommentupdater',
+            'com.cryptomorin.xseries',
+            'io.leangen.geantyref',
+            'org.incendo.cloud',
+            'online.flowerinsnow.reflectionutils'
+    ].forEach() {
+        relocate(it, "online.flowerinsnow.mappicture.plugin.shaded.$it")
+    }
+
+    from('LICENSE')
+}
+
+tasks.withType(JavaCompile).configureEach() {
+    dependsOn(':api:shadowJar')
+    options.encoding = 'UTF-8'
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+processResources() {
+    def props = [
+            'version': project.version
+    ]
+    inputs.properties(props)
+
+    filesMatching('plugin.yml') {
+        expand(props)
+    }
+}

@@ -1,0 +1,54 @@
+plugins() {
+    id('java')
+    id('java-library')
+    id('com.github.johnrengelman.shadow').version("${shadow_version}")
+    id('maven-publish')
+}
+
+group = rootProject.group
+version = rootProject.version
+
+repositories() {
+    mavenCentral()
+    maven() {
+        url = 'https://hub.spigotmc.org/nexus/repository/public/'
+    }
+}
+
+configurations() {
+    shade
+    api.extendsFrom(shade)
+}
+
+dependencies() {
+    implementation("org.spigotmc:spigot-api:${spigot_version}")
+    implementation("org.jetbrains:annotations:${jetbrains_annotations_version}")
+}
+
+shadowJar() {
+    archiveClassifier = null
+    configurations = [
+            project.configurations.shade
+    ]
+}
+
+java() {
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach() {
+    options.encoding = 'UTF-8'
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+publishing() {
+    publications() {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+    repositories() {
+        mavenLocal()
+    }
+}

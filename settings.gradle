@@ -1,0 +1,4 @@
+rootProject.name = 'map-picture'
+include 'api'
+include 'plugin-r1-20-4'
+
