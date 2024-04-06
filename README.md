@@ -168,3 +168,18 @@ ItemStack itemStack = fmp.createItemStack(64); // 创建64个此地图像素画�
 本项目 [plugin-r1-20-4/](plugin-r1-20-4/) 目录下的文件采用 [GPL-3.0 license](plugin-r1-20-4/LICENSE) 开源
 
 其余文件采用 [Apache-2.0 license](LICENSE) 开源
+
+# 编译
+为编译 API 到本地仓库，请使用
+
+```shell
+cd api/
+gradle publish
+```
+
+为编译插件，请使用
+
+```shell
+cd plugin-r1-20-4/
+gradle shadowJar
+```
