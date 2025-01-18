@@ -1,0 +1,6 @@
+main: 'cn.flowerinsnow.mappicture.plugin.MapPicturePlugin'
+name: 'MapPicture'
+version: '${version}'
+author: 'flowerinsnow'
+api-version: '1.21.4'
+folia-supported: true

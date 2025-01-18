@@ -6,7 +6,7 @@
 
 游戏的每一张地图数据都会保存在`world/data/map_x.dat`下，最大地图ID会保存在`world/data/idcounts.dat`下
 
-地图数据的`colors`是一个大小为16384的字节数组，代表了128*128内每个点的颜色数据
+地图数据的`colors`是一个大小为 16384 的字节数组，代表了 128*128 内每个点的颜色数据
 
 游戏原版有这些颜色可供选择
 
@@ -112,19 +112,7 @@ LOWEST(3, 135);
 本项目的算法实现来自 [Regarrzo/Java-Floyd-Steinberg-Dithering](https://github.com/Regarrzo/Java-Floyd-Steinberg-Dithering)
 
 # API 使用方法
-配置仓库
-
-```groovy
-maven() {
-    url = 'https://repo.flowerinsnow.online/repository/maven-public/'
-}
-```
-
-配置依赖
-
-```groovy
-compileOnly('online.flowerinsnow.mappicture:api:1.0.0')
-```
+仓库暂不可用，如有需要可以尝试将其编译到本地仓库使用
 
 配置前置
 
@@ -144,7 +132,7 @@ ItemStack itemStack = fmp.createItemStack(64); // 创建64个此地图像素画�
 ```
 
 # 插件使用方法
-插件目前只适用于 1.20.4-paper
+插件目前只适用于 1.21.4-paper，支持 Folia
 
 ```
 /mappicture give <player> <width> <height> <dithering> <url>
@@ -159,27 +147,27 @@ ItemStack itemStack = fmp.createItemStack(64); // 创建64个此地图像素画�
 ```
 
 # 使用的依赖
-- [flowerinsnowdh/ReflectionUtils](https://github.com/flowerinsnowdh/ReflectionUtils) ([Apache-2.0 license](https://github.com/flowerinsnowdh/ReflectionUtils/blob/master/LICENSE))
+- [PaperMC/Paper](https://github.com/PaperMC/Paper) ([GPL-3.0 license](https://github.com/PaperMC/Paper/blob/main/LICENSE.md))
+- [PaperMC/Folia](https://github.com/PaperMC/Folia) ([GPL-3.0 license](https://github.com/PaperMC/Folia/blob/master/PATCHES-LICENSE))
 - [CarmJos/MineConfiguration](https://github.com/CarmJos/MineConfiguration) ([LGPL-3.0 license](https://github.com/CarmJos/MineConfiguration/blob/master/LICENSE))
-- [Incendo/cloud](https://github.com/Incendo/cloud) ([MIT license](https://github.com/Incendo/cloud/blob/master/LICENSE))
 - [Regarrzo/Java-Floyd-Steinberg-Dithering](https://github.com/Regarrzo/Java-Floyd-Steinberg-Dithering) ([Unlicense license](https://github.com/Regarrzo/Java-Floyd-Steinberg-Dithering/blob/master/LICENSE))
 
 # 开源许可
-本项目 [plugin-r1-20-4/](plugin-r1-20-4/) 目录下的文件采用 [GPL-3.0 license](plugin-r1-20-4/LICENSE) 开源
+本项目 [1.21.4-paper/](1.21.4-paper/) 目录下的文件采用 [GNU GENERAL PUBLIC LICENSE Version 3](1.21.4-paper/LICENSE) 开源
 
-其余文件采用 [Apache-2.0 license](LICENSE) 开源
+其余文件采用 [GNU LESSER GENERAL PUBLIC LICENSE Version 3](LICENSE) 开源
 
 # 编译
 为编译 API 到本地仓库，请使用
 
 ```shell
 cd api/
-gradle publish
+./gradlew publish
 ```
 
 为编译插件，请使用
 
 ```shell
-cd plugin-r1-20-4/
-gradle shadowJar
+cd 1.21.4-paper/
+./gradlew shadowJar
 ```

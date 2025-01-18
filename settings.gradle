@@ -1,4 +1,13 @@
+pluginManagement() {
+    repositories() {
+        gradlePluginPortal()
+        maven() {
+            url = 'https://repo.papermc.io/repository/maven-public/'
+        }
+    }
+}
+
 rootProject.name = 'map-picture'
-include 'api'
-include 'plugin-r1-20-4'
+include('api')
+include('1.21.4-paper')
 

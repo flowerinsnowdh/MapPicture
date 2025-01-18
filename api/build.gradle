@@ -1,7 +1,9 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins() {
     id('java')
     id('java-library')
-    id('com.github.johnrengelman.shadow').version("${shadow_version}")
+    id('com.gradleup.shadow').version("${version_shadow}")
     id('maven-publish')
 }
 
@@ -11,7 +13,7 @@ version = rootProject.version
 repositories() {
     mavenCentral()
     maven() {
-        url = 'https://hub.spigotmc.org/nexus/repository/public/'
+        url = 'https://repo.papermc.io/repository/maven-public/'
     }
 }
 
@@ -21,11 +23,11 @@ configurations() {
 }
 
 dependencies() {
-    implementation("org.spigotmc:spigot-api:${spigot_version}")
-    implementation("org.jetbrains:annotations:${jetbrains_annotations_version}")
+    compileOnly("io.papermc.paper:paper-api:${version_paper}")
+    compileOnly("org.jetbrains:annotations:${version_jetbrains_annotations}")
 }
 
-shadowJar() {
+tasks.named('shadowJar', ShadowJar) {
     archiveClassifier = null
     configurations = [
             project.configurations.shade
@@ -34,12 +36,14 @@ shadowJar() {
 
 java() {
     withSourcesJar()
+
+    toolchain() {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 tasks.withType(JavaCompile).configureEach() {
     options.encoding = 'UTF-8'
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
 }
 
 publishing() {

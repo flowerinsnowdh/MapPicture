@@ -1,0 +1,78 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+plugins() {
+    id('java')
+    id('java-library')
+    id('com.gradleup.shadow').version("${version_shadow}")
+    id('io.papermc.paperweight.userdev').version('2.0.0-SNAPSHOT')
+}
+
+group = rootProject.group
+version = rootProject.version
+
+repositories() {
+    mavenCentral()
+    maven() {
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+configurations() {
+    shade
+    api.extendsFrom(shade)
+}
+
+dependencies() {
+    shade(project(path: ':api', configuration: 'shadow'))
+    compileOnly("io.papermc.paper:paper-api:${version_paper}")
+    compileOnly("org.jetbrains:annotations:${version_jetbrains_annotations}")
+    shade("cc.carm.lib:mineconfiguration-bukkit:${version_mineconfiguration}")
+
+    paperweight.paperDevBundle("${version_paper}")
+}
+
+tasks.named('shadowJar', ShadowJar) {
+    archiveBaseName = "${parent.name}-${project.name}"
+    archiveClassifier = null
+    configurations = [
+            project.configurations.shade
+    ]
+
+    [
+            'cc.carm.lib.configuration',
+            'cc.carm.lib.easyplugin',
+            'cc.carm.lib.mineconfiguration',
+            'cc.carm.lib.yamlcommentupdater',
+            'com.cryptomorin.xseries'
+    ].forEach() {
+        relocate(it, "cn.flowerinsnow.mappicture.plugin.shaded.$it")
+    }
+
+    manifest() {
+        attributes['paperweight-mappings-namespace'] = 'mojang'
+    }
+
+    from('LICENSE')
+}
+
+java() {
+    toolchain() {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach() {
+    dependsOn(':api:shadowJar')
+    options.encoding = 'UTF-8'
+}
+
+processResources() {
+    def props = [
+            'version': project.version
+    ]
+    inputs.properties(props)
+
+    filesMatching('plugin.yml') {
+        expand(props)
+    }
+}
